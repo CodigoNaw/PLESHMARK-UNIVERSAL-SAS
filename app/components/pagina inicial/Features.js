@@ -4,7 +4,7 @@ export default function Features() {
   return (
     <section className="bg-gray-50 py-16">
       <div className="max-w-6xl mx-auto text-center">
-        <h2 className="text-3xl font-bold text-gray-800">
+        <h2 className="text-3xl font-bold text-gray-800 p-12">
           ¿POR QUÉ ELEGIR PLESHMARK?
         </h2>
 

@@ -96,7 +96,7 @@ export default function AdminPQRS() {
   return (
     <div className="h-screen flex flex-col">
       {/* 🔹 Header superior */}
-      <header className="flex items-center justify-between bg-gradient-to-r from-purple-700 to-purple-900 h-16 px-6 shadow-lg fixed top-0 left-0 right-0 z-50">
+      <header className="flex items-center justify-between bg-gradient-to-r from-purple-700/90 via-purple-500/90 to-purple-700/90 h-16 px-6 shadow-lg fixed top-0 left-0 right-0 z-50">
         <h1 className="text-white font-extrabold text-xl tracking-wide">
           Panel de Administrador
         </h1>
@@ -105,7 +105,7 @@ export default function AdminPQRS() {
 
       <div className="flex flex-1 pt-16">
         {/* 🔹 Sidebar fijo */}
-        <aside className="w-64 bg-gradient-to-b from-purple-800 to-purple-900 flex flex-col items-center py-6 justify-between rounded-r-2xl fixed left-0 top-16 bottom-0 shadow-lg">
+        <aside className="w-64 bg-gradient-to-b from-purple-700/90 via-purple-500/90 to-purple-700/90 flex flex-col items-center py-6 justify-between rounded-r-2xl fixed left-0 top-16 bottom-0 shadow-lg">
           <div className="flex flex-col items-center">
             {/* Foto perfil */}
             <div className="bg-gray-100 rounded-full p-2 mb-4 border-4 border-purple-600">

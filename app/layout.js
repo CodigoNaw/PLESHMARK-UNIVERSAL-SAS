@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Pleshmark", 
+  title: "PLESHMARK", 
   icons: {
     icon: "/Logo.png", 
   },

@@ -189,88 +189,92 @@ export default function EmpresaDashboard() {
       </header>
 
       <div className="flex flex-1 pt-14">
+<aside
+  className={`fixed top-14 left-0 bottom-0 z-40 h-[540px] overflow-hidden bg-purple-700/90 backdrop-blur-xl border-r border-white/20 flex flex-col justify-between py-8 shadow-xl transition-all duration-500 rounded-br-[15px] ${
+    sidebarOpen ? "w-64" : "w-20"
+  }`}
+>
+  <div>
+    {sidebarOpen && (
+      <div className="text-center px-2">
+        <h2 className="text-white text-2xl font-semibold drop-shadow-lg text-center break-words leading-tight max-w-[150px] mx-auto">
+          {user.nombreEmpresa}
+        </h2>
+        <p className="text-white/80 text-sm drop-shadow-sm">
+          NIT: {user.nit}
+        </p>
+      </div>
+    )}
 
-        <aside
-          className={`bg-purple-700/90 backdrop-blur-xl border-r border-white/20 flex flex-col justify-between py-8 shadow-xl transition-all duration-500 rounded-br-[15px] ${
-            sidebarOpen ? "w-64" : "w-20"
-          }`}
+    <nav className="flex flex-col gap-6 mt-10">
+      {menuItems.map((item, index) => (
+        <button
+          key={index}
+          onClick={() => {
+            if (item.label === "PQRS") {
+              router.push("/empresa-dashboard/pqrs");
+            } else if (item.label === "INICIO") {
+              router.push("/empresa-dashboard");
+            } else if (item.label === "POSTULACIONES") {
+              router.push("/empresa-dashboard/postulaciones");
+            } else if (item.label === "OFERTAS") {
+              router.push("/empresa-dashboard/ofertas");
+            }
+          }}
+          className="flex items-center gap-4 px-6 py-3 text-white/80 hover:text-white hover:bg-white/20 rounded-xl transition-all duration-300 group w-full text-left"
         >
+          <Image
+            src={item.icon}
+            alt={item.label}
+            width={28}
+            height={28}
+            className="group-hover:scale-110 transition-transform drop-shadow-md"
+          />
+          {sidebarOpen && <span className="tracking-wide">{item.label}</span>}
+        </button>
+      ))}
+    </nav>
+  </div>
 
-          <div>
-            {sidebarOpen && (
-              <div className="text-center px-2">
-                <h2 className="text-white text-2xl font-semibold drop-shadow-lg text-center break-words leading-tight max-w-[150px] mx-auto">
-                  {user.nombreEmpresa}
-                </h2>
-                <p className="text-white/80 text-sm drop-shadow-sm">
-                  NIT: {user.nit}
-                </p>
-              </div>
-            )}
-
-<nav className="flex flex-col gap-6 mt-10">
-  {menuItems.map((item, index) => (
+  <div className="px-4">
     <button
-      key={index}
       onClick={() => {
-        if (item.label === "PQRS") {
-          router.push("/empresa-dashboard/pqrs"); // ✅ redirige al formulario de PQRS
-        } else if (item.label === "INICIO") {
-          router.push("/empresa-dashboard");
-        } else if (item.label === "POSTULACIONES") {
-          router.push("/empresa-dashboard/postulaciones");
-        } else if (item.label === "OFERTAS") {
-          router.push("/empresa-dashboard/ofertas");
-        }
+        localStorage.removeItem("userData");
+        router.replace("/empresa-login");
       }}
-      className="flex items-center gap-4 px-6 py-3 text-white/80 hover:text-white hover:bg-white/20 rounded-xl transition-all duration-300 group w-full text-left"
+      className="bg-cyan-600 hover:bg-red-700 px-12 py-2 rounded-full font-semibold text-white shadow"
     >
-      <Image
-        src={item.icon}
-        alt={item.label}
-        width={28}
-        height={28}
-        className="group-hover:scale-110 transition-transform drop-shadow-md"
-      />
-      {sidebarOpen && <span className="tracking-wide">{item.label}</span>}
+      Cerrar Sesión
     </button>
-  ))}
-</nav>
+  </div>
+</aside>
 
-          </div>
-          <div className="px-4">
-            <button  onClick={() => {
-      localStorage.removeItem("userData"); // o token/cookie que uses
-      router.replace("/empresa-login"); // reemplaza sin dejar historial
+
+
+
+
+  <main
+    className={`flex-1 p-6 transition-all duration-500 ${
+      sidebarOpen ? "ml-64" : "ml-20"
+    }`}
+  >
+  <div
+    className="w-full max-w-5xl min-h-[500px] rounded-3xl p-8 border border-gray-300 bg-white/80 backdrop-blur-lg relative shadow-xl"
+    style={{
+      boxShadow: "10px 10px 20px rgba(157, 0, 255, 0.8)", // sombra rosa brillante
+      borderRight: "2px solid rgba(191, 0, 255, 0.9)",
+      borderBottom: "2px solid rgba(255, 0, 150, 0.9)",
     }}
-     className="bg-red-600 hover:bg-red-700 px-12 py-2 rounded-full font-semibold text-white shadow">
-              Cerrar Sesión
-            </button>
-          </div>
-        </aside>
-
-
-  <main className="flex-1 p-6 text-black overflow-auto flex justify-center items-start bg-transparent">
-    <div
-      className="w-full max-w-5xl min-h-[500px] rounded-3xl p-8 border border-gray-300 bg-white/80 backdrop-blur-lg relative shadow-xl"
-      style={{
-        boxShadow: "10px 10px 20px rgba(157, 0, 255, 0.8)", // sombra rosa brillante
-        borderRight: "2px solid rgba(191, 0, 255, 0.9)",
-        borderBottom: "2px solid rgba(255, 0, 150, 0.9)",
-      }}
+  >
+    {/* Botón Editar */}
+    <button
+      onClick={openEditModal}
+      className="absolute top-4 right-4 bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 hover:scale-105 transition-all duration-200"
     >
+      Editar ✏️
+    </button>
 
-      {/* Edit button ahora abre modal (solo se modificó esto) */}
-      <button
-        onClick={openEditModal}
-        className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 hover:scale-105 transition-all duration-200"
-      >
-        Editar ✏️
-      </button>
-
-
-      <div className="flex items-center gap-6 mb-6">
-
+    <div className="flex items-center gap-6 mb-6">
       <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden relative">
         {fotoPreview ? (
           <img src={fotoPreview} alt="Foto empresa" className="w-full h-full object-cover" />
@@ -285,29 +289,53 @@ export default function EmpresaDashboard() {
         />
       </div>
 
+      <h2 className="text-[40px] font-bold leading-tight break-words">
+        {user.nombreEmpresa || "Nombre de la Empresa"}
+      </h2>
+    </div>
 
-        <h2 className="text-[40px] font-bold leading-tight break-words">
-          {user.nombreEmpresa || "Nombre de la Empresa"}
-        </h2>
+    <div className="grid grid-cols-2 gap-y-[10px] gap-x-6">
+      <p className="text-gray-700">NIT: {user.nit}</p>
+      <p className="text-gray-700">Teléfono: {user.telefono || "No registrado"}</p>
+      <p className="text-gray-700">Tipo empresa: {user.tipoEmpresa || "No registrado"}</p>
+      <p className="text-gray-700">Dirección: {user.direccion || "No registrada"}</p>
+      <p className="text-gray-700">Correo: {user.correo}</p>
+    </div>
+
+    <div className="mt-6">
+      <h2 className="text-gray-800 leading-relaxed">
+        {user.descripcion || "Esta empresa aún no ha agregado una descripción."}
+      </h2>
+    </div>
+
+    {/* Contenedores PERFIL y CURRICULUM alineados a la izquierda */}
+    <div className="mt-10 flex gap-6 justify-start">
+      {/* PERFIL */}
+      <div className="bg-cyan-600 text-white w-60 h-20 rounded-lg shadow-lg flex flex-col justify-between p-4">
+        <h3 className="text-xl font-bold">PERFIL</h3>
+        <a
+          href="/perfil"
+          className="text-sm font-semibold self-end hover:underline"
+        >
+          VER MAS
+        </a>
       </div>
 
-
-      <div className="grid grid-cols-2 gap-y-[10px] gap-x-6">
-        <p className="text-gray-700">NIT: {user.nit}</p>
-        <p className="text-gray-700">Teléfono: {user.telefono || "No registrado"}</p>
-        <p className="text-gray-700">Tipo empresa: {user.tipoEmpresa || "No registrado"}</p>
-        <p className="text-gray-700">Dirección: {user.direccion || "No registrada"}</p>
-        <p className="text-gray-700">Correo: {user.correo}</p>
-      </div>
-
-
-      <div className="mt-6">
-        <h2 className="text-gray-800 leading-relaxed">
-          {user.descripcion || "Esta empresa aún no ha agregado una descripción."}
-        </h2>
+      {/* CURRICULUM */}
+      <div className="bg-cyan-600 text-white w-60 h-20 rounded-lg shadow-lg flex flex-col justify-between p-4">
+        <h3 className="text-xl font-bold">CURRICULUM</h3>
+        <a
+          href="/curriculum"
+          className="text-sm font-semibold self-end hover:underline"
+        >
+          VER MAS
+        </a>
       </div>
     </div>
-  </main>
+  </div>
+</main>
+
+
 
       </div>
 

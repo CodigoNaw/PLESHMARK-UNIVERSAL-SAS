@@ -54,7 +54,7 @@ export default function Navbar() {
           <span className="relative z-10">Iniciar Sesión</span>
         </Link>
         <Link
-          href="/register"
+          href="/login"
           className="relative bg-gradient-to-r from-purple-800 to-purple-900 text-white px-6 py-2.5 rounded-lg font-semibold hover:from-purple-900 hover:to-purple-800 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 border border-purple-700/50"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-200 rounded-lg"></div>

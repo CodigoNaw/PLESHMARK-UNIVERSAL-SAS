@@ -8,7 +8,7 @@ export default function Hero() {
       <div className="absolute bottom-0 left-0 w-full h-[400px]"></div>
       
       <div className="relative z-10 max-w-5xl mx-auto px-4 mb-32 mt-10">
-        <h1 className="text-3xl md:text-3xl lg:text-6xl font-bold mb-6 mt-4 leading-tight">
+        <h1 className="text-3xl md:text-3xl lg:text-6xl font-bold mb-6 mt-20 leading-tight">
           TU PRÓXIMO EMPLEO TE<br />
           ESTÁ ESPERANDO!
         </h1>

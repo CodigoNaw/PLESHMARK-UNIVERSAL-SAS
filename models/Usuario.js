@@ -8,7 +8,6 @@ const UsuarioSchema = new mongoose.Schema(
     tipoDocumento: { type: String },
     numeroDocumento: { type: String },
     telefono: { type: String },
-    direccion: { type: String },
 
     // 🔹 Nuevo campo: especialidad
     especialidad: { type: String, default: "" },

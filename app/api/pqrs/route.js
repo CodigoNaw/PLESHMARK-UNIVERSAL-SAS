@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/mongodb";
 import Pqrs from "@/models/Pqrs";
 
+
 // Util: normalizar tipo ("petición" -> "peticion")
 const normalize = (s = "") =>
   s
@@ -12,6 +13,8 @@ const normalize = (s = "") =>
 // POST  -> Crear PQRS
 // Body: { usuarioId, rol, correo, motivo, tipo, descripcion }
 // =========================
+
+
 export async function POST(req) {
   await dbConnect();
   try {

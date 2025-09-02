@@ -3,6 +3,51 @@ import Usuario from "@/models/Usuario";
 import Empresa from "@/models/Empresa";
 import Administrador from "@/models/Administrador";
 
+export async function DELETE(req) {
+  try {
+    await dbConnect();
+
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    const rol = searchParams.get("rol");
+
+    if (!id || !rol) {
+      return new Response(
+        JSON.stringify({ error: "Faltan parámetros (id o rol)" }),
+        { status: 400 }
+      );
+    }
+
+    let deletedDoc = null;
+
+    if (rol === "usuario") {
+      deletedDoc = await Usuario.findByIdAndDelete(id);
+    } else if (rol === "empresa") {
+      deletedDoc = await Empresa.findByIdAndDelete(id);
+    } else if (rol === "admin") {
+      deletedDoc = await Administrador.findByIdAndDelete(id);
+    }
+
+    if (!deletedDoc) {
+      return new Response(
+        JSON.stringify({ error: "No se encontró el registro" }),
+        { status: 404 }
+      );
+    }
+
+    return new Response(
+      JSON.stringify({ message: "Registro eliminado correctamente" }),
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error eliminando:", error);
+    return new Response(
+      JSON.stringify({ error: "Error al eliminar registro" }),
+      { status: 500 }
+    );
+  }
+}
+
 export async function GET(req) {
   try {
     await dbConnect();

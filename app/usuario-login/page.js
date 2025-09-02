@@ -51,6 +51,11 @@ export default function UsuarioLogin() {
 
   return (
     <div className="min-h-screen bg-cover bg-center flex justify-center items-center" style={{ backgroundImage: "url('/f3.png')" }}>
+              <div className="absolute top-4  left-0 bg-purple-700 text-white font-bold px-9 py-1 rounded-full shadow-md">
+          <Link href="./">
+    PLESHMARK
+    </Link>
+  </div>
       <div className="bg-white rounded-2xl shadow-lg p-10 flex flex-col items-center border border-purple-500" style={{ width: "400px" }}>
         <Link href="/"><Image src="/Logo.png" alt="Logo Pleshmark" width={50} height={50} className="mb-4" /></Link>
 

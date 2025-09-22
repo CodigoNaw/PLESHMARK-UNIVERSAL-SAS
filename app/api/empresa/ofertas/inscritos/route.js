@@ -1,13 +1,20 @@
-import connectDB from "@/lib/db"; 
+// app/api/empresa/ofertas/inscritos/route.js
+import dbConnect from "@/lib/mongodb";
+import Postulacion from "@/models/Postulacion";
 
-export async function GET(req) {
-  const { searchParams } = new URL(req.url);
-  const ofertaId = searchParams.get("ofertaId");
+export async function POST(req) {
+  await dbConnect();
+  const body = await req.json(); // { oferta, usuario }
 
-  const db = await connectDB();
-  const inscritos = await db.collection("postulaciones")
-    .find({ ofertaId })
-    .toArray();
-
-  return new Response(JSON.stringify(inscritos), { status: 200 });
+  try {
+    // evita duplicados: mismo usuario a misma oferta
+    const existe = await Postulacion.findOne({ oferta: body.oferta, usuario: body.usuario });
+    if (existe) {
+      return new Response(JSON.stringify({ error: "Ya te postulaste" }), { status: 400 });
+    }
+    const p = await Postulacion.create(body);
+    return new Response(JSON.stringify(p), { status: 201 });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 400 });
+  }
 }

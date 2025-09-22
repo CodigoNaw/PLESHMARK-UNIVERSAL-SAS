@@ -8,7 +8,16 @@ export async function PUT(req) {
     const body = await req.json();
     console.log("Body recibido en /api/usuario/update:", body);
 
-    const { id, nombre, numeroDocumento, correo, telefono, especialidad } = body;
+    const { 
+      id, 
+      nombre, 
+      numeroDocumento, 
+      correo, 
+      telefono, 
+      especialidad, 
+      foto,            // 👈 ahora sí lo recibimos
+      pdfCurriculum    // 👈 también recibimos el PDF
+    } = body;
 
     if (!id) {
       return new Response(
@@ -17,7 +26,7 @@ export async function PUT(req) {
       );
     }
 
-    // ✅ Usamos $set para asegurar que especialidad se actualiza
+    // ✅ Usamos $set para actualizar solo lo que venga en el body
     const usuarioActualizado = await Usuario.findByIdAndUpdate(
       id,
       { 
@@ -26,7 +35,9 @@ export async function PUT(req) {
           numeroDocumento, 
           correo, 
           telefono, 
-          especialidad 
+          especialidad,
+          foto,
+          pdfCurriculum
         } 
       },
       { 

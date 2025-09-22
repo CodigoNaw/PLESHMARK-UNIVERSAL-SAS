@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+import Link from "next/link";
 export default function Vacancies() {
   return (
     <section className="bg-gradient-to-b from-gray-50 to-white py-20">
@@ -81,7 +81,7 @@ export default function Vacancies() {
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <span className="text-green-600 font-medium text-sm">Activa</span>
                 </div>
-                <span className="text-purple-600 font-semibold text-sm">Ver detalles →</span>
+                
               </div>
             </div>
           </div>
@@ -127,7 +127,7 @@ export default function Vacancies() {
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <span className="text-green-600 font-medium text-sm">Activa</span>
                 </div>
-                <span className="text-purple-600 font-semibold text-sm">Ver detalles →</span>
+             
               </div>
             </div>
           </div>
@@ -173,7 +173,7 @@ export default function Vacancies() {
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <span className="text-green-600 font-medium text-sm">Activa</span>
                 </div>
-                <span className="text-purple-600 font-semibold text-sm">Ver detalles →</span>
+             
               </div>
             </div>
           </div>
@@ -181,14 +181,17 @@ export default function Vacancies() {
         </div>
 
         {/* CTA Section */}
-        <div className="mt-16 text-center">
-          <div className="inline-flex items-center gap-3 bg-purple-600 hover:bg-purple-700 px-8 py-4 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
-            <span>Explorar todas las ofertas</span>
-          </div>
-        </div>
+    <div className="mt-16 text-center">
+      <Link
+        href="/login"
+        className="inline-flex items-center gap-3 bg-purple-600 hover:bg-purple-700 px-8 py-4 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+      >
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <span>Explorar todas las ofertas</span>
+      </Link>
+    </div>
       </div>
     </section>
   );

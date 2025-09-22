@@ -25,32 +25,39 @@ export default function UsuarioDashboard() {
     { icon: "/pqr.png", label: "PQRS", link: "/usuario-dashboard/pqrs" },
     { icon: "/archivito.png", label: "OFERTAS", link: "/usuario-dashboard/ofertas" },
   ];
+useEffect(() => {
+  const data = getUserData();
+  if (!data) {
+    router.push("/usuario-login");
+    return;
+  }
+  if (data.rol !== "usuario") {
+    if (data.rol === "empresa") router.push("/empresa-dashboard");
+    if (data.rol === "admin") router.push("/admin-dashboard");
+    return;
+  }
 
-  useEffect(() => {
-    const savedState = localStorage.getItem("sidebarOpen");
-    if (savedState !== null) {
-      setSidebarOpen(savedState === "true");
-    }
-  }, []);
+  // 🚀 Aquí ya tenemos el usuario logueado
+  const fetchUsuario = async () => {
+    try {
+      const res = await fetch(`/api/usuario/${data.id || data._id}`);
+      const usuarioDB = await res.json();
 
-  useEffect(() => {
-    localStorage.setItem("sidebarOpen", sidebarOpen);
-  }, [sidebarOpen]);
+      if (!res.ok) throw new Error(usuarioDB.error || "Error cargando usuario");
 
-  useEffect(() => {
-    const data = getUserData();
-    if (!data) {
-      router.push("/usuario-login");
-      return;
+      setUser(usuarioDB);
+      setPreview(usuarioDB.foto || null);
+
+      // actualizar localStorage con la info completa
+      localStorage.setItem("userData", JSON.stringify(usuarioDB));
+    } catch (err) {
+      console.error("Error obteniendo usuario:", err);
     }
-    if (data.rol !== "usuario") {
-      if (data.rol === "empresa") router.push("/empresa-dashboard");
-      if (data.rol === "admin") router.push("/admin-dashboard");
-      return;
-    }
-    setUser(data);
-    setPreview(data.foto || null);
-  }, [router]);
+  };
+
+  fetchUsuario();
+}, [router]);
+
 
   // Manejo de subida de foto
 const handleImageUpload = async (e) => {
@@ -240,7 +247,6 @@ const handleSaveUsuario = async () => {
     </div>
   )}
 </div>
-
         </label>
         {sidebarOpen && (
           <div className="text-center mt-3">
@@ -443,7 +449,7 @@ const handleSaveUsuario = async () => {
                     </p>
 <div className="flex items-center justify-between">
   <a 
-    href="/usuario-dashboard/" 
+    href="/usuario-dashboard/ofertas" 
     className="text-white font-semibold text-sm hover:text-purple-200 transition-colors flex items-center gap-1"
   >
     Ver más

@@ -13,6 +13,8 @@ export default function UsuariosPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchInput, setSearchInput] = useState("");
  const [isHelpOpen, setIsHelpOpen] = useState(false);
+ const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+   const [activeMenuItem, setActiveMenuItem] = useState("CANDIDATOS");
 
   const router = useRouter();
   const limit = 9;
@@ -23,6 +25,7 @@ export default function UsuariosPage() {
     { icon: "/pqr.png", label: "PQRS", path: "/empresa-dashboard/pqrs" },
     { icon: "/archivito.png", label: "OFERTAS", path: "/empresa-dashboard/ofertas" },
   ];
+
 
   // ✅ Validar rol y obtener datos del usuario
   useEffect(() => {
@@ -72,115 +75,222 @@ export default function UsuariosPage() {
   return (
     <div className="h-screen flex flex-col bg-cover bg-center">
       {/* 🔹 Header superior */}
-      <header className="flex items-center justify-between h-16 px-8 
-        bg-gradient-to-r from-purple-700 via-purple-600 to-purple-800 
-        shadow-lg backdrop-blur-md fixed top-0 left-0 right-0 z-50
-        border-b border-purple-400/30">
-        <div className="flex items-center gap-2">
-          <Image src="/logo.png" alt="Logo" width={35} height={35} />
-          <span className="text-white font-extrabold text-xl tracking-wider">
+      <header
+        className="flex items-center justify-between h-20 px-8 
+                   bg-gradient-to-r from-purple-700 via-purple-600 to-purple-800 
+                   shadow-lg backdrop-blur-md fixed top-0 left-0 right-0 z-50
+                   border-b border-purple-400/30"
+      >
+        {/* IZQUIERDA: Logo + info empresa */}
+        <div className="flex items-center gap-3">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={45}
+            height={45}
+            className="rounded-lg shadow-md"
+          />
+          <h2 className="text-white font-extrabold text-2xl tracking-wide">
             PLESHMARK
-          </span>
+          </h2>
         </div>
-<div className="flex items-center gap-4">
-  <div className="relative group">
-    {/* Efecto de glow animado */}
-    <div className="absolute -inset-1 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 rounded-full opacity-30 group-hover:opacity-70 blur-sm animate-pulse"></div>
-    
-    {/* Badge principal con efectos múltiples */}
-    <span className="relative flex items-center gap-2 text-sm font-semibold text-white px-4 py-2 rounded-full 
-                   bg-gradient-to-r from-purple-500/80 via-purple-600/80 to-indigo-600/80 
-                   backdrop-blur-xl border border-white/30 shadow-2xl
-                   hover:shadow-purple-500/25 hover:scale-105 hover:border-white/50
-                   transition-all duration-300 ease-out
-                   before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-r 
-                   before:from-white/10 before:via-transparent before:to-white/10 before:opacity-0 
-                   hover:before:opacity-100 before:transition-opacity before:duration-300">
-      
-      {/* Ícono animado */}
-      <div className="w-2 h-2 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 animate-ping"></div>
-      <div className="w-2 h-2 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 absolute"></div>
-      
-      {/* Texto con efecto shimmer */}
-      <span className="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent 
-                     hover:from-purple-100 hover:via-white hover:to-purple-100 transition-all duration-300">
-        Rol: {user.rol}
-      </span>
-      
-      {/* Partículas flotantes */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-full pointer-events-none">
-        <div className="absolute w-1 h-1 bg-white/40 rounded-full animate-bounce" 
-             style={{top: '20%', left: '15%', animationDelay: '0s', animationDuration: '2s'}}></div>
-        <div className="absolute w-0.5 h-0.5 bg-purple-200/50 rounded-full animate-bounce" 
-             style={{top: '60%', right: '20%', animationDelay: '0.5s', animationDuration: '1.5s'}}></div>
-        <div className="absolute w-1 h-1 bg-indigo-200/30 rounded-full animate-bounce" 
-             style={{bottom: '25%', left: '70%', animationDelay: '1s', animationDuration: '1.8s'}}></div>
-      </div>
-      
-      {/* Efecto de brillo que se mueve */}
-      <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500
-                    bg-gradient-to-r from-transparent via-white/20 to-transparent 
-                    -translate-x-full group-hover:translate-x-full transform transition-transform duration-1000 ease-in-out"></div>
-    </span>
-    
-    {/* Ondas expansivas en hover */}
-    <div className="absolute inset-0 rounded-full border-2 border-purple-400/20 opacity-0 group-hover:opacity-100 
-                  animate-ping group-hover:animate-none transition-opacity duration-300"></div>
-  </div>
-</div>
+
+        {/* CENTRO: Menú navegación con estados activos */}
+        <nav className="flex items-center gap-2">
+          {menuItems.map((item, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setActiveMenuItem(item.label);
+                if (item.label === "PQRS") router.push("/empresa-dashboard/pqrs");
+                else if (item.label === "INICIO") router.push("/empresa-dashboard");
+                else if (item.label === "CANDIDATOS")
+                  router.push("/empresa-dashboard/postulaciones");
+                else if (item.label === "OFERTAS")
+                  router.push("/empresa-dashboard/ofertas");
+              }}
+              className={`group relative flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
+                activeMenuItem === item.label
+                  ? 'bg-white/20 text-white border border-white/30 shadow-lg scale-105'
+                  : 'text-white/80 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              {/* Indicador activo */}
+              {activeMenuItem === item.label && (
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+              )}
+              
+              <div className={`w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-300 ${
+                activeMenuItem === item.label
+                  ? 'bg-white/30 shadow-md'
+                  : 'bg-white/10 group-hover:bg-white/20'
+              }`}>
+                <Image
+                  src={item.icon}
+                  alt={item.label}
+                  width={20}
+                  height={20}
+                  className="transition-transform duration-300 group-hover:scale-110"
+                />
+              </div>
+              <span className={`font-medium text-sm hidden lg:block transition-all duration-300 ${
+                activeMenuItem === item.label
+                  ? 'font-bold'
+                  : ''
+              }`}>
+                {item.label}
+              </span>
+
+              {/* Efecto de brillo en activo */}
+              {activeMenuItem === item.label && (
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/10 via-white/20 to-white/10 opacity-50"></div>
+              )}
+            </button>
+          ))}
+        </nav>
+
+        {/* DERECHA: Rol + dropdown usuario */}
+        <div className="flex items-center gap-4">
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 rounded-full opacity-30 group-hover:opacity-70 blur-sm animate-pulse"></div>
+            <span className="relative flex items-center gap-2 text-sm font-semibold text-white px-4 py-2 rounded-full 
+                            bg-gradient-to-r from-purple-500/80 via-purple-600/80 to-indigo-600/80 
+                            backdrop-blur-xl border border-white/30 shadow-2xl
+                            hover:shadow-purple-500/25 hover:scale-105 hover:border-white/50
+                            transition-all duration-300 ease-out">
+              <div className="w-2 h-2 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 animate-ping"></div>
+              <div className="w-2 h-2 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 absolute"></div>
+              <span className="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
+                Rol: {user.rol}
+              </span>
+            </span>
+          </div>
+
+          {/* Dropdown Usuario */}
+          <div className="relative">
+            <button
+              onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+              className="flex items-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-md 
+                         px-4 py-2 rounded-xl border border-white/20 transition-all duration-300 
+                         hover:scale-105 group"
+            >
+              {/* Foto o inicial */}
+              {user?.foto ? (
+                <img
+                  src={user.foto}
+                  alt="Foto de perfil"
+                  className="w-8 h-8 rounded-full object-cover shadow-lg border border-white/30"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-indigo-500 
+                                flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  {user?.nombreEmpresa?.charAt(0) || "E"}
+                </div>
+              )}
+
+              <div className="hidden md:block text-left">
+                <p className="text-white font-medium text-sm truncate max-w-[120px]">
+                  {user?.nombreEmpresa}
+                </p>
+                <p className="text-white/70 text-xs">Empresa</p>
+              </div>
+
+              <svg
+                className={`w-4 h-4 text-white/70 transition-transform duration-300 ${
+                  userDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {/* Dropdown Menu */}
+            {userDropdownOpen && (
+              <div className="absolute right-0 top-full mt-2 w-64 bg-white/95 backdrop-blur-xl 
+                              rounded-2xl shadow-2xl border border-white/30 py-2 z-50
+                              animate-in slide-in-from-top-2 duration-300">
+                
+                {/* Perfil header */}
+                <div className="px-4 py-3 border-b border-gray-200/50">
+                  <div className="flex items-center gap-3">
+                    {/* Foto del usuario o inicial */}
+                    {user?.foto ? (
+                      <img
+                        src={user.foto}
+                        alt="Foto de perfil"
+                        className="w-10 h-10 rounded-full object-cover shadow-lg border border-gray-200"
+                      />
+                    ) : (
+                      <div
+                        className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-indigo-500 
+                                   flex items-center justify-center text-white font-bold shadow-lg"
+                      >
+                        {user?.nombreEmpresa?.charAt(0) || "E"}
+                      </div>
+                    )}
+
+                    <div>
+                      <p className="font-semibold text-gray-800 truncate max-w-[150px]">
+                        {user?.nombreEmpresa}
+                      </p>
+                      <p className="text-gray-500 text-sm">NIT: {user?.nit}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Menu items */}
+                <div className="py-2">
+                  <button className="w-full px-4 py-2 text-left hover:bg-purple-50 transition-colors duration-200 flex items-center gap-3">
+                    <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span className="text-gray-700">Mi Perfil</span>
+                  </button>
+                  
+                  <button className="w-full px-4 py-2 text-left hover:bg-purple-50 transition-colors duration-200 flex items-center gap-3">
+                    <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span className="text-gray-700">Configuración</span>
+                  </button>
+
+                  <div className="border-t border-gray-200/50 my-2"></div>
+
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem("userData");
+                      router.replace("/empresa-login");
+                    }}
+                    className="w-full px-4 py-2 text-left hover:bg-red-50 transition-colors duration-200 
+                               flex items-center gap-3 text-red-600 hover:text-red-700"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    <span className="font-medium">Cerrar Sesión</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </header>
 
-      <div className="flex flex-1 pt-14">
-        {/* 🔹 Sidebar */}
-        <aside className="w-64 bg-gradient-to-b from-purple-800 to-indigo-900 backdrop-blur-xl border-r border-white/20 flex flex-col justify-between py-6 shadow-xl fixed left-0 top-14 bottom-0">
-          {sidebarOpen && (
-            <div className="text-center px-4 mb-8">
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 shadow-inner">
-                <h2 className="text-white text-2xl font-semibold drop-shadow-lg text-center break-words leading-tight max-w-[150px] mx-auto">
-                  {user.nombreEmpresa || user.nombre}
-                </h2>
-                {user.nit && <p className="text-white/70 text-sm mt-1 truncate">NIT: {user.nit}</p>}
-              </div>
-            </div>
-          )}
-          <nav className="flex flex-col gap-3 px-2">
-            {menuItems.map((item, index) => (
-              <button
-                key={index}
-                onClick={() => router.push(item.path)}
-                className="relative group flex items-center gap-3 px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300 w-full text-left"
-              >
-                <div className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-xl group-hover:bg-white/20 transition-all duration-300 shadow-sm">
-                  <Image
-                    src={item.icon}
-                    alt={item.label}
-                    width={24}
-                    height={24}
-                    className="transition-transform duration-300 group-hover:scale-110"
-                  />
-                </div>
-                {sidebarOpen && <span className="font-medium text-sm">{item.label}</span>}
-              </button>
-            ))}
-          </nav>
-          <div className="px-4 mt-4">
-            <button
-              onClick={() => {
-                localStorage.removeItem("userData");
-                router.replace("/empresa-login");
-              }}
-              className="w-full bg-gradient-to-r from-red-600 via-red-700 to-red-600 hover:from-red-700 hover:via-red-800 hover:to-red-700 
-                         py-2 rounded-xl font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 active:scale-95"
-            >
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-sm">Cerrar Sesión</span>
-              </div>
-            </button>
-          </div>
-        </aside>
+      {/* Click outside para cerrar dropdown */}
+      {userDropdownOpen && (
+        <div 
+          className="fixed inset-0 z-40" 
+          onClick={() => setUserDropdownOpen(false)}
+        ></div>
+      )}
+            <div className="flex flex-1 pt-20">
 
         {/* 🔹 Contenido principal */}
-<main className="flex-1 ml-64 p-8 bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-100/40 overflow-y-auto min-h-screen relative">
+<main className="flex-1 ml-0 p-8 bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-100/40 overflow-y-auto min-h-screen relative">
   {/* Elementos decorativos de fondo */}
   <div className="absolute inset-0 overflow-hidden pointer-events-none">
     <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/10 to-purple-600/10 rounded-full blur-3xl"></div>

@@ -45,17 +45,43 @@ export async function POST(req) {
         },
       });
 
-      await transporter.sendMail({
-        from: `"PLESHMARK COMPANY" <${process.env.EMAIL_USER}>`,
-        to: correo,
-        subject: "Recupera tu contraseña",
-        html: `
-          <p>Hola,</p>
-          <p>Solicitaste restablecer tu contraseña. Te pedimos porfavor ser cuidadoso con tu contraseña.Este enlace es válido por 15 minutos:</p>
-          <p><a href="${resetUrl}" target="_blank">${resetUrl}</a></p>
-          <p>Si no realizaste esta solicitud, ignora este mensaje.</p>
-        `,
-      });
+await transporter.sendMail({
+  from: `"PLESHMARK COMPANY" <${process.env.EMAIL_USER}>`,
+  to: correo,
+  subject: "🔐 Recuperación de contraseña - PLESHMARK",
+  html: `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; background-color: #f9fafb;">
+      <h2 style="color: #111827; text-align: center;">Recuperación de contraseña</h2>
+      
+      <p>Hola,</p>
+      <p>Hemos recibido una solicitud para restablecer tu contraseña en <strong>PLESHMARK</strong>. 
+      Por favor, sigue el enlace a continuación para crear una nueva contraseña. 
+      <span style="color: #b91c1c; font-weight: bold;">Este enlace es válido por solo 15 minutos.</span></p>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${resetUrl}" target="_blank" style="background-color: #2563eb; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;">
+          Restablecer contraseña
+        </a>
+      </div>
+      
+      <p>Si el botón no funciona, copia y pega este enlace en tu navegador:</p>
+      <p style="word-break: break-all; color: #2563eb;">
+        <a href="${resetUrl}" target="_blank">${resetUrl}</a>
+      </p>
+      
+      <p style="margin-top: 30px; font-size: 14px; color: #6b7280;">
+        Si no realizaste esta solicitud, puedes ignorar este mensaje de manera segura. 
+        Tu contraseña actual seguirá funcionando.
+      </p>
+      
+      <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;" />
+      <p style="text-align: center; font-size: 12px; color: #9ca3af;">
+        © ${new Date().getFullYear()} PLESHMARK COMPANY. Todos los derechos reservados.
+      </p>
+    </div>
+  `,
+});
+
     }
 
     return new Response(

@@ -1,14 +1,11 @@
+// models/Postulacion.js
 import mongoose from "mongoose";
 
 const PostulacionSchema = new mongoose.Schema(
   {
-    ofertaId: { type: mongoose.Schema.Types.ObjectId, ref: "Oferta", required: true },
-    nombre: String,
-    correo: String,
-    documento: String,
-    especialidad: String,
-    pdfCurriculum: String,
-    foto: { type: String, default: "/default-avatar.png" },
+    oferta: { type: mongoose.Schema.Types.ObjectId, ref: "Oferta", required: true },
+    usuario: { type: mongoose.Schema.Types.ObjectId, ref: "Usuario", required: true },
+    estado: { type: String, enum: ["pendiente", "aceptado", "rechazado"], default: "pendiente" }
   },
   { timestamps: true }
 );

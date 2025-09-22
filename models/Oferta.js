@@ -1,9 +1,10 @@
+// models/Oferta.js
 import mongoose from "mongoose";
 
 const OfertaSchema = new mongoose.Schema(
   {
     cargo: { type: String, required: true },
-    empresa: { type: mongoose.Schema.Types.ObjectId, ref: "Empresa", required: true },
+    nombreEmpresa: { type: mongoose.Schema.Types.ObjectId, ref: "Empresa", required: true },
     salario: { type: Number, required: true },
     direccion: { type: String },
     descripcion: { type: String },

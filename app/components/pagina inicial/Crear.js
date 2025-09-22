@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function Crear() {
   return (
     <section className="relative bg-white py-16 overflow-hidden">
@@ -176,19 +177,21 @@ export default function Crear() {
         {/* Success Metrics */}
 
         {/* Bottom CTA */}
-        <div className="text-center mt-20">
-          <div className="inline-flex items-center group">
-            <div className="px-12 py-5 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-3xl transform hover:-translate-y-2 hover:scale-105 transition-all duration-500 group-hover:rotate-1">
-              <div className="flex items-center space-x-4">
-                <span>Comenzar Ahora</span>
-                <div className="w-6 h-6 border-2 border-white/80 rounded-full flex items-center justify-center group-hover:rotate-180 transition-transform duration-500">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                </div>
-              </div>
+    <div className="text-center mt-20">
+      <div className="inline-flex items-center group">
+        <Link
+          href="/login"
+          className="px-12 py-5 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-3xl transform hover:-translate-y-2 hover:scale-105 transition-all duration-500 group-hover:rotate-1"
+        >
+          <div className="flex items-center space-x-4">
+            <span>Comenzar Ahora</span>
+            <div className="w-6 h-6 border-2 border-white/80 rounded-full flex items-center justify-center group-hover:rotate-180 transition-transform duration-500">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
             </div>
           </div>
-          
-        </div>
+        </Link>
+      </div>
+    </div>
       </div>
     </section>
   );

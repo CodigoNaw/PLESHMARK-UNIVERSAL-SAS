@@ -1,50 +1,24 @@
-import { ObjectId } from "mongodb";
-import connectDB from "@/lib/db";
+// app/api/empresa/ofertas/route.js
+import dbConnect from "@/lib/mongodb";
+import Oferta from "@/models/Oferta";
 
-export async function GET(req) {
-  const { searchParams } = new URL(req.url);
-  const empresaId = searchParams.get("empresaId");
-  const search = searchParams.get("search") || "";
+export async function POST(req) {
+  await dbConnect();
+  const body = await req.json();
 
-  if (!empresaId) return new Response(JSON.stringify([]), { status: 200 });
+  try {
+    // body debe incluir: cargo, empresa (id), salario, ... 
+    const nueva = await Oferta.create(body);
+    return new Response(JSON.stringify(nueva), { status: 201 });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 400 });
+  }
+}
 
-  const db = await connectDB();
-  let query = { empresaId };
-  if (search) query.cargo = { $regex: search, $options: "i" };
-
-  const ofertas = await db.collection("ofertas").find(query).toArray();
+export async function GET() {
+  await dbConnect();
+  const ofertas = await Oferta.find().populate("nombreEmpresa", "nombre correo"); // populate empresa nombre si existe
   return new Response(JSON.stringify(ofertas), { status: 200 });
 }
 
-export async function POST(req) {
-  const body = await req.json();
-  const db = await connectDB();
-  const result = await db.collection("ofertas").insertOne(body);
-  
-  if (!result.acknowledged) {
-    return new Response(JSON.stringify({ error: "No se pudo crear la oferta" }), { status: 500 });
-  }
-
-  return new Response(JSON.stringify({ message: "Oferta creada", id: result.insertedId }), { status: 201 });
-}
-
-export async function PUT(req) {
-  const { searchParams } = new URL(req.url);
-  const id = searchParams.get("id");
-  if (!id) return new Response(JSON.stringify({ error: "ID no proporcionado" }), { status: 400 });
-
-  const body = await req.json();
-  const db = await connectDB();
-  await db.collection("ofertas").updateOne({ _id: new ObjectId(id) }, { $set: body });
-  return new Response(JSON.stringify({ message: "Oferta actualizada" }), { status: 200 });
-}
-
-export async function DELETE(req) {
-  const { searchParams } = new URL(req.url);
-  const id = searchParams.get("id");
-  if (!id) return new Response(JSON.stringify({ error: "ID no proporcionado" }), { status: 400 });
-
-  const db = await connectDB();
-  await db.collection("ofertas").deleteOne({ _id: new ObjectId(id) });
-  return new Response(JSON.stringify({ message: "Oferta eliminada" }), { status: 200 });
-}
+// Editar oferta

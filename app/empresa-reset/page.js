@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export default function EmpresaResetPage() {
+function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -73,7 +73,6 @@ export default function EmpresaResetPage() {
             type="submit"
             disabled={cargando || !token}
             className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg transition"
-
           >
             {cargando ? "Guardando..." : "Restablecer"}
           </button>
@@ -83,5 +82,26 @@ export default function EmpresaResetPage() {
         )}
       </div>
     </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function EmpresaResetPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
